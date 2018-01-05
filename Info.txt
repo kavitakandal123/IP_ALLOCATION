@@ -1,0 +1,55 @@
+Information
+
+change in php.ini
+====================
+Find [mail function] and remove semi colon which is before ;smtp = localhost
+Put the semi colon before sendmail_path = "C:\xampp\mailtodisk\mailtodisk.exe"
+sendmail_path="C:\xampp\mailtodisk\mailtodisk.exe"
+
+Task Scheduler cron job
+=========================
+Open Task Scheduler from windows Start menu
+Go to Action menu and hit Create Task...
+in General tab, fill the Name and Description fields as you want
+in Triggers tab, hit New button.
+from Begin the Task dropdown, select On a schedule and choose Daily
+from Advanced settings section, select Repeat task every as you want and set for a duration on Indefinitely.
+on Actions tab, from Action dropdown, select Start a program.
+on the Program\script box, enter path to shellscript.vbs like C:\path\to\shellscript.vbs.
+leave Add argumentts (optional) section empty.
+in Start in (optional) box, enter parent directory of shellscript.vbs like C:\path\to\.
+Hit upvote on this tutorial :) Have fun.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Sending mail from localhost
+=============================
+You can send mail from localhost with sendmail package , sendmail package is inbuild in XAMPP. So if you are using XAMPP then you can easily send mail from localhost.
+
+for example you can configure C:\xampp\php\php.ini and c:\xampp\sendmail\sendmail.ini for gmail to send mail.
+
+in C:\xampp\php\php.ini find extension=php_openssl.dll and remove the semicolon from the beginning of that line to make SSL working for gmail for localhost.
+
+in php.ini file find [mail function] and change
+
+SMTP=smtp.gmail.com
+smtp_port=587
+sendmail_from = my-gmail-id@gmail.com
+sendmail_path = "\"C:\xampp\sendmail\sendmail.exe\" -t"
+Now Open C:\xampp\sendmail\sendmail.ini. Replace all the existing code in sendmail.ini with following code
+
+[sendmail]
+
+smtp_server=smtp.gmail.com
+smtp_port=587
+error_logfile=error.log
+debug_logfile=debug.log
+auth_username=my-gmail-id@gmail.com
+auth_password=my-gmail-password
+force_sender=my-gmail-id@gmail.com
+Now you have done!! create php file with mail function and send mail from localhost.
+
+PS: don't forgot to replace my-gmail-id and my-gmail-password in above code. Also, don't forget to remove duplicate keys if you copied settings from above. For example comment following line if there is another sendmail_path : sendmail_path="C:\xampp\mailtodisk\mailtodisk.exe" in the php.ini file
+
+Also remember to restart the server using the XAMMP control panel so the changes take effect.

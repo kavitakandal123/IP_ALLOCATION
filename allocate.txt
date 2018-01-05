@@ -1,0 +1,91 @@
+
+
+<html xmlns="http://www.w3.org/1997/xhtml">
+
+<head>
+ <title> Allocate IP</title>
+</head>
+
+<body>
+  <?php
+  require_once('connection.inc.php');
+  require_once('logout_session.php');
+   if($conn)
+ {if(isset($_POST['Allocate'])&&!empty($_POST['Allocate']))
+  {if(isset($_POST['IP_Address'])AND isset($_POST['Name'])AND isset($_POST['MAC_Address'])AND isset($_POST['Email'])AND isset($_POST['DOA'])AND isset($_POST['DOE']))
+    {if(!empty($_POST['IP_Address'])&&!empty($_POST['Name'])&&!empty($_POST['MAC_Address'])&&!empty($_POST['Email']))
+      {     $IP_Address=$_POST['IP_Address'];
+            $Lab_Name=$_POST['Lab_Name'];
+            $Student_Staff=$_POST['ss'];
+            $Name=$_POST['Name'];
+            $MAC_Address=$_POST['MAC_Address'];
+            $Email=$_POST['Email'];
+           if(empty($_POST['DOA'])){
+             $DOA=date('Y/m/d',time());
+
+           } else  {
+               $date=date_create($_POST['DOA']);
+               $DOA=date_format($date,'Y/m/d');
+           }
+           if(empty($_POST['DOE'])){
+              $DOE=date('Y/m/d',time()+(31536000));
+
+             }else{
+               $date=date_create($_POST['DOE']);
+               $DOE=date_format($date,'Y/m/d');
+             }
+            //insert query
+            $query=" INSERT INTO allocation"."(ID, IP_Address, Lab_Name, Student_Staff, Name, MAC_Address, Email_id, DateOfAllocation, DateOfExpiry)"."VALUES"."(NULL,'$IP_Address','$Lab_Name','$Student_Staff','$Name','$MAC_Address','$Email','$DOA','$DOE')";
+            mysql_select_db($my_db);
+            $result=mysql_query($query);
+             if(!$result)
+               {
+                echo "<script type='text/javasript'>alert('DATABASE NOT UPDATED')</script>";
+               }
+             else
+               { echo "<script type='text/javascript'>alert('DATABASE UPDATED');</script>";
+                 mysql_close();
+               }
+         }else
+           { echo 'Please fill all necessary fields';}
+       }
+     }
+   }
+  else
+   {
+     die( 'connection not made');
+   }
+
+
+
+?>
+
+<center>
+  <font size="10" color="Blue" ><i>Update Allocated IP Addresses</i></font>
+  <hr size="4" color="black">
+  <form action="allocate.php.php" method="POST">
+    <table border="2" cellspacing="20" cellpadding="20">
+
+         <tr><td>IP:    <input type="text" name="IP_Address" id="IP_Address"></td></tr>
+         <tr><td> Lab Name:   <select type="dropdown" name="Lab_Name" id="Lab_Name">
+                 <option value="null" name="Lab_Name" checked> </option>
+                 <option value="Computer Center" name="Lab_Name" >Computer Center</option>
+                 <option value="Micro Biology" name="Lab_Name">Micro Biology</option>
+                 </select></td></tr>
+         <tr><td>Student/Staff : <input type="radio" name="ss" id="ss" value="Student" checked>Student</input>  <br>
+            &emsp; &emsp; &emsp;&emsp;&nbsp;&emsp;                   <input type="radio" name="ss" id="ss" value="staff">Staff</input></td></tr>
+         <tr><td> Name:  <input type="text" name="Name" id="Name"></td></tr>
+         <tr><td>MAC Address:    <input type="text" name="MAC_Address" id="MAC_Address"/></td></tr>
+         <tr><td>Email Id:       <input type="text" name="Email" id="Email"/></td></tr>
+         <tr><td>DateOfAllocation:  <input type="text" name="DOA" id="DOA"/></td></tr>
+         <tr><td>DateOfExpiry:      <input type="text" name="DOE" id="DOE"/></td></tr>
+   </table>
+      <br><br>
+      <input type="submit" value="Allocate" name="Allocate" id="submit" />
+  </form>
+
+
+</center>
+
+</body>
+</html>
